@@ -43,7 +43,6 @@ public class AdaptadorCompras extends BaseAdapter {
                     .load(link)
                     .into(postImg);
         }
-
     }
 
     @Override
@@ -91,8 +90,7 @@ public class AdaptadorCompras extends BaseAdapter {
         btnComprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) activity).dialogHuella.show();
-                ((MainActivity) activity).mFAH.startListening();
+                ((MainActivity) activity).solicitarHuella();
             }
         });
 

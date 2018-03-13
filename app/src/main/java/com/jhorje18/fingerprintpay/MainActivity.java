@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements FahListener {
         //Preparamos ListView
         añadirProducto(new Producto("OnePlus 5T", "Móvil OnePlus 5T en color negro con 128Gb", 500, "https://gloimg.gbtcdn.com/gb/pdm-product-pic/Electronic/2017/12/09/goods-img/1513904681072322709.jpg"));
         añadirProducto(new Producto("iPhone X", "Móvil Appel iPhone X con 128Gb", 1000, "https://store.storeimages.cdn-apple.com/4662/as-images.apple.com/is/image/AppleInc/aos/published/images/i/ph/iphone/x/iphone-x-silver-select-2017?wid=305&hei=358&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1515602510472"));
+        añadirProducto(new Producto("Nintendo Switch", "Consola Hibrida Nintendo Switch en color Neon", 320, ""));
     }
 
     public void añadirProducto(Producto nuevo){
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements FahListener {
         if (authSuccessful) {
             // do some stuff here in case auth was successful
             txtResultadoHuella.setText("Huella reconocida");
-            imgResultadoHuella.setColorFilter(Color.GREEN);
+            imgResultadoHuella.setBackgroundColor(Color.GREEN);
             imgResultadoHuella.setImageResource(R.drawable.ic_check_black_24dp);
             txtResultadoHuella.setTextColor(Color.GREEN);
         } else if (mFAH != null) {
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements FahListener {
                     break;
                 case FahErrorType.Auth.AUTH_NOT_RECOGNIZED:
                     txtResultadoHuella.setText("Huella no reconocida");
-                    imgResultadoHuella.setColorFilter(Color.RED);
+                    imgResultadoHuella.setBackgroundColor(Color.RED);
                     imgResultadoHuella.setImageResource(R.drawable.ic_close_black_24dp);
                     txtResultadoHuella.setTextColor(Color.RED);
                     //do some stuff here
@@ -139,9 +140,20 @@ public class MainActivity extends AppCompatActivity implements FahListener {
             int minutes = (int) ((milliseconds / (1000*60)) % 60);
 
             txtResultadoHuella.setText("Espere " + minutes + ":" + seconds + " para volver a intentarlo");
-            imgResultadoHuella.setColorFilter(Color.GRAY);
+            imgResultadoHuella.setBackgroundColor(Color.GRAY);
             imgResultadoHuella.setImageResource(R.drawable.ic_fingerprint_black_24dp);
             txtResultadoHuella.setTextColor(Color.GRAY);
         }
+    }
+
+    public void solicitarHuella() {
+        //Valores Default
+        txtResultadoHuella.setText("Coloque su dedo en el sensor de Huellas");
+        imgResultadoHuella.setBackgroundColor(Color.BLACK);
+        imgResultadoHuella.setImageResource(R.drawable.ic_fingerprint_black_24dp);
+        txtResultadoHuella.setTextColor(Color.BLACK);
+
+        dialogHuella.show();
+        mFAH.startListening();
     }
 }
