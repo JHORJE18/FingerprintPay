@@ -3,7 +3,7 @@ Proyecto para probar la integración con la lectura de huellas
 
 Para este proyecto se ha usado como ejemplo una mini aplicación donde se muestran productos y se pueden comprar mediante la Huella.
 
-# Metodos Interesantes
+## Metodos Interesantes
 Aqui listo los metodos que para mí son más interesantes de conocer...
 
 ### Receptor de respuestas del Lector de Huellas
