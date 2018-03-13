@@ -5,11 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jhorje18.fingerprintpay.Adaptador.AdaptadorCompras;
+import com.jhorje18.fingerprintpay.Objetos.Producto;
 import com.pro100svitlo.fingerprintAuthHelper.FahErrorType;
 import com.pro100svitlo.fingerprintAuthHelper.FahListener;
 import com.pro100svitlo.fingerprintAuthHelper.FingerprintAuthHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements FahListener {
 
@@ -19,11 +24,20 @@ public class MainActivity extends AppCompatActivity implements FahListener {
     private ImageView imgResultadoHuella;
     private TextView txtResultadoHuella;
     private AlertDialog dialogHuella;
+    private ListView listViewProductos;
+
+    private ArrayList<Producto> listaProductos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Controlador Vista
+        listViewProductos = (ListView) findViewById(R.id.listPrincipal);
+
+        //Iniciar ArrayList
+        listaProductos = new ArrayList<Producto>();
 
         //Genera Lectura de Huellas
         mFAH = new FingerprintAuthHelper
@@ -46,6 +60,21 @@ public class MainActivity extends AppCompatActivity implements FahListener {
                 .setView(viewDialogo)
                 .setMessage("Coloque su dedo en el sensor de huellas");
         dialogHuella = builder.create();
+
+        //Preparamos ListView
+        añadirProducto(new Producto("OnePlus 5T", "Móvil OnePlus 5T en color negro con 128Gb", 500, "https://gloimg.gbtcdn.com/gb/pdm-product-pic/Electronic/2017/12/09/goods-img/1513904681072322709.jpg"));
+        añadirProducto(new Producto("iPhone X", "Móvil Appel iPhone X con 128Gb", 1000, "https://store.storeimages.cdn-apple.com/4662/as-images.apple.com/is/image/AppleInc/aos/published/images/i/ph/iphone/x/iphone-x-silver-select-2017?wid=305&hei=358&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1515602510472"));
+    }
+
+    public void añadirProducto(Producto nuevo){
+        listaProductos.add(nuevo);
+        recargarLista();
+    }
+
+    public void recargarLista() {
+        AdaptadorCompras adapter;
+        adapter = new AdaptadorCompras(this, listaProductos);
+        listViewProductos.setAdapter(adapter);
     }
 
     @Override
