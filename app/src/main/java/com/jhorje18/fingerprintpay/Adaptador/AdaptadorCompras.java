@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jhorje18.fingerprintpay.MainActivity;
 import com.jhorje18.fingerprintpay.Objetos.Producto;
 import com.jhorje18.fingerprintpay.R;
 
@@ -78,6 +79,7 @@ public class AdaptadorCompras extends BaseAdapter {
         txtPrecio = v.findViewById(R.id.txtCardPrecio);
         txtTitulo = v.findViewById(R.id.txtCardTitulo);
         imgProducto = v.findViewById(R.id.imgCardImagen);
+        btnComprar = v.findViewById(R.id.btnCardPay);
 
         //Establecer valores
         txtTitulo.setText(listaProductos.get(position).getTitulo());
@@ -85,6 +87,14 @@ public class AdaptadorCompras extends BaseAdapter {
         txtPrecio.setText(String.valueOf((int) listaProductos.get(position).getPrecio()) + "€");
 
         cargarImagen(listaProductos.get(position).getUrlPicture(), imgProducto);
+
+        btnComprar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) activity).dialogHuella.show();
+                ((MainActivity) activity).mFAH.startListening();
+            }
+        });
 
         return v;
     }

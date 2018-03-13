@@ -1,9 +1,12 @@
 package com.jhorje18.fingerprintpay;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,11 +22,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements FahListener {
 
     //Variables
-    private FingerprintAuthHelper mFAH;
+    public FingerprintAuthHelper mFAH;
 
     private ImageView imgResultadoHuella;
     private TextView txtResultadoHuella;
-    private AlertDialog dialogHuella;
+    public AlertDialog dialogHuella;
     private ListView listViewProductos;
 
     private ArrayList<Producto> listaProductos;
@@ -58,6 +61,14 @@ public class MainActivity extends AppCompatActivity implements FahListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, 0)
                 .setTitle("Autentificate mediante la huella")
                 .setView(viewDialogo)
+                .setCancelable(false)
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        mFAH.stopListening();
+                    }
+                })
                 .setMessage("Coloque su dedo en el sensor de huellas");
         dialogHuella = builder.create();
 
@@ -85,14 +96,23 @@ public class MainActivity extends AppCompatActivity implements FahListener {
 
         if (authSuccessful) {
             // do some stuff here in case auth was successful
+            txtResultadoHuella.setText("Huella reconocida");
+            imgResultadoHuella.setColorFilter(Color.GREEN);
+            imgResultadoHuella.setImageResource(R.drawable.ic_check_black_24dp);
+            txtResultadoHuella.setTextColor(Color.GREEN);
         } else if (mFAH != null) {
             // do some stuff here in case auth failed
             switch (errorType) {
                 case FahErrorType.General.LOCK_SCREEN_DISABLED:
+                    break;
                 case FahErrorType.General.NO_FINGERPRINTS:
                     mFAH.showSecuritySettingsDialog();
                     break;
                 case FahErrorType.Auth.AUTH_NOT_RECOGNIZED:
+                    txtResultadoHuella.setText("Huella no reconocida");
+                    imgResultadoHuella.setColorFilter(Color.RED);
+                    imgResultadoHuella.setImageResource(R.drawable.ic_close_black_24dp);
+                    txtResultadoHuella.setTextColor(Color.RED);
                     //do some stuff here
                     break;
                 case FahErrorType.Auth.AUTH_TO_MANY_TRIES:
@@ -112,8 +132,16 @@ public class MainActivity extends AppCompatActivity implements FahListener {
         } else {
             //add some code here
         }
+
         if (milliseconds > 0) {
             //if u need, u can show timeout for user
+            int seconds = (int) (milliseconds / 1000) % 60 ;
+            int minutes = (int) ((milliseconds / (1000*60)) % 60);
+
+            txtResultadoHuella.setText("Espere " + minutes + ":" + seconds + " para volver a intentarlo");
+            imgResultadoHuella.setColorFilter(Color.GRAY);
+            imgResultadoHuella.setImageResource(R.drawable.ic_fingerprint_black_24dp);
+            txtResultadoHuella.setTextColor(Color.GRAY);
         }
     }
 }
