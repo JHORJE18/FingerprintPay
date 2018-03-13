@@ -5,6 +5,7 @@ Para este proyecto se ha usado como ejemplo una mini aplicación donde se muestr
 
 ## Metodos Interesantes
 Aqui listo los metodos que para mí son más interesantes de conocer...
+- <a href="#Receptor-de-respuestas-del-Lector-de-Huellas">Receptor de respuestas del Lector de Huellas</a>
 
 ### Receptor de respuestas del Lector de Huellas
 Automáticamente el metodo `onFingerprintStatus` nos va a devolver la información de la respuesta recibida del lector de Huellas
